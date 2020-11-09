@@ -1,4 +1,3 @@
-  
 const query = require('../controllers/query');
 const {valuesForQuery} = require('../controllers/values-for-insert');
 
@@ -8,14 +7,14 @@ const {valuesForQuery} = require('../controllers/values-for-insert');
  * @param  {[String]} columns Array of column names
  * @param  {[String]} values Array of values for those column names, can be multidientional
  */
-module.exports = async (conn, table, columns, values) => {
-  const VALUES = valuesForQuery(values)
+module.exports = async (conn, table,) => {
   try {
-    const user = await query(conn, `INSERT INTO ${table}(${columns.join(', ')}) VALUES ${VALUES};`);
-    if (user.insertId) {
-      console.log(user);
-      return await query(conn, `SELECT * FROM ${table} WHERE ID=?`, [user.insertId]);
-    }
-    return user;
+    const deleter = await query(conn, `DELETE FROM ${table} WHERE id=?;`);
+    console.log(deleter)
+    // if (user.insertId) {
+    //   console.log(user);
+    //   return await query(conn, `SELECT * FROM ${table} WHERE ID=?`, [user.insertId]);
+    // }
+    return deleter;
   } catch(e) { console.log(e)}
 }
