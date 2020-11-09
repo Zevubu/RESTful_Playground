@@ -4,6 +4,7 @@ const query = require("../../controllers/query");
 const dbConfig = require('../../dbConfig');
 const create = require('../../crud/create');
 const read = require("../../crud/read");
+const deleter = require('../../crud/delete')
 // /api/all
 Router.route("/all")
     .get(async (req,res)=>{
@@ -50,5 +51,18 @@ Router.route("/read")
         res.send(result)
     })
 
+Router.route("/delete")
+    .put(async (req,res)=>{
+        if (!req.body) return res.sendStatus(400); 
+        const {table, id} = req.body;
+        // console.log(`Table: ${table}`)
+        const conn = await connection(dbConfig).catch(e=>console.log(e));
+        const result = await deleter(
+            conn,
+            table,
+            id
+        );
+        res.send(result)
+    })
 
     module.exports = Router;
